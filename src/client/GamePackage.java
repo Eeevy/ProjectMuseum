@@ -1,4 +1,4 @@
-package database;
+package client;
 
 public class GamePackage {
 
