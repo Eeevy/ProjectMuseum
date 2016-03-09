@@ -1,7 +1,6 @@
 package main.java.server;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,41 +16,58 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ServerTestCase {
-	private ClientHandler ch;
+	private static ClientHandler ch;
 
 	@BeforeClass
-	public void test() {
+	public static void test() {
 		ClientHandler ch = new ClientHandler();
 	}
 	//Test methods in clientHandler
 	
 	@Test
 	public void testGetCategories(){
-		
+		assertEquals("categories" ,ch.getCategories());
 	}
 	
 	@Test
-	public void testGetGamePackage(){
-		
+	public void testGetGamePackageLowBVAGood1(){
+		assertEquals("gamepackage1", ch.getGamePackage("1"));
+	}
+	
+	@Test
+	public void testGetGamePackageLowBVAGood2(){
+		assertEquals("gamepackage10", ch.getGamePackage("10"));
+	}
+	
+	@Test
+	public void testGetGamePackageLowBVABad1(){
+		assertNotSame("gamepackage0", ch.getGamePackage("0"));
+	}
+	
+	@Test
+	public void testGetGamePackageLowBVABad2(){
+		assertNotSame("gamepackage11", ch.getGamePackage("11"));
 	}
 	
 	@Test
 	public void testLogin(){
+		assertEquals("emma, bubbelgum", ch.login("username=Emma&pw=bubbelgum"));
 		
 	}
 	
 	@Test
 	public void testCreateAccount(){
-		
+		assertEquals("rosamunda, hajen", ch.createAccount("username=rosaminda&pw=hajen"));
 	}
 	
 	@Test
 	public void testGetHighScore(){
-		
+		assertEquals("highscore", ch.getHighScore());
 	}
 	
 	@Test 
 	public void testSetHighScore(){
+		assertEquals("105, emmapemma", ch.setHighScore("s=105&user=emmapemma"));
 		
 	}
 	
@@ -61,7 +77,7 @@ public class ServerTestCase {
 	//Test methods in server.java
 	
 	@Test
-	public void testHighScore() {
+	public void testPutHighScore() {
 		//
 		JSONObject json = null;
 		try {
