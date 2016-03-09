@@ -1,13 +1,13 @@
-package server;
+package main.java.server;
 
-import client.Client;
-import database.DBSQL;
 
 import java.util.StringJoiner;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+
+import main.java.database.DBSQL;
 
 /**
  * Handles requests from Server. Starts a separate Task for each request using a ThreadPool.
@@ -24,6 +24,7 @@ public class ClientHandler {
 
     /**
      * Returns Categories and GamePackages (Category and GamePackage name only).
+     * 
      * @return String
      */
     public String getCategories(){

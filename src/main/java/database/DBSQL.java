@@ -1,4 +1,4 @@
-package database;
+package main.java.database;
 
 public class DBSQL {
 
@@ -9,13 +9,13 @@ public class DBSQL {
 
 
     public String getGamePackage(String id){
-
+    	
         return null;
     }
 
 
     public String login(String username, String password){
-        return null;
+        return username + password+ "har skickats till databasen";
     }
 
 
@@ -28,7 +28,7 @@ public class DBSQL {
 
     public String getHighScore(){
 
-        return null;
+        return "Highscore";
     }
 
 

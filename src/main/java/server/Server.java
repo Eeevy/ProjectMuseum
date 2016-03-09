@@ -1,4 +1,4 @@
-package server;
+package main.java.server;
 
 import static spark.Spark.get;
 import static spark.Spark.put;
