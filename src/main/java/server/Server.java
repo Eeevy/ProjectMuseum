@@ -15,18 +15,20 @@ public class Server {
          * Get Highscore
          */
         get("/highscore", (request, res) -> {
-            System.out.println(request.params());
+          //  System.out.println(request.params());
             res.type("text/json");
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Request-Method", "*");
             res.header("Access-Control-Allow-Headers", "*");
-            return clientHandler.getHighScore();
+            String str=clientHandler.getHighScore();
+            System.out.println(str);
+            return str;
         });
 
         /**
          * Add highscore to Database, Param= score and username.
          */
-        put("/highscore/:name", (request, res) -> { //:name = s=score&user=username
+        get("/highscore/:name", (request, res) -> { //:name = s=score&user=username
             System.out.println(request.params());
             res.type("text/json");
             res.header("Access-Control-Allow-Origin", "*");
@@ -38,7 +40,7 @@ public class Server {
         /**
          * Get Category and gamepackages.
          */
-        get("/category/:name", (request, res) -> {  //name= swe/eng
+        get("/categories", (request, res) -> {  //name= swe/eng
             System.out.println(request.params());
             res.type("text/json");
             res.header("Access-Control-Allow-Origin", "*");
@@ -51,7 +53,7 @@ public class Server {
         /**
          * Get gamepackage       //:name EX. id=1&lang=swe
          */
-        get("/category/gamepackage/:name", (request, res) -> {
+        get("/categories/gamepackage/:name", (request, res) -> {
             System.out.println(request.params());
             res.type("text/json");
             res.header("Access-Control-Allow-Origin", "*");
@@ -76,7 +78,7 @@ public class Server {
         /**
          * create account, param =username,password (+email and confirm password?)
          */
-        put("/create-account/:name", (request, res) -> {
+        get("/create-account/:name", (request, res) -> {
             System.out.println(request.params());
             res.type("text/json");
             res.header("Access-Control-Allow-Origin", "*");

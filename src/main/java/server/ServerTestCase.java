@@ -17,6 +17,7 @@ import org.junit.Test;
 
 public class ServerTestCase {
 	private ClientHandler ch;
+//	private Server server=new Server();
 
 	
 	@Test
@@ -78,23 +79,90 @@ public class ServerTestCase {
 	
 	
 	
-	//Test methods in server.java
+	//******Test methods in server.java **************************************
 	
-//	@Test
-//	public void testPutHighScore() {
-//		//
-//		JSONObject json = null;
-//		try {
-//			json = readJsonFromUrl("http://localhost:4567/highscore/s=11&user=Emma");
-//		}
-//		catch (IOException | JSONException e) {
-//			e.printStackTrace();
-//		}
-//		String str=json.toString();
-//		assertEquals(str, "Emma 11");
-//	}
+	@Test
+	public void testServerGetHighScore() {
+		//
+		String json = null;
+		try {
+			json = readJsonFromUrl("http://localhost:4567/highscore");
+		}
+		catch (IOException | JSONException e) {
+			e.printStackTrace();
+		}
+		String str=json.toString();
+		assertEquals(str, "highscore");
+	}
 	
+	@Test
+	public void testServerSetHighScore() {
+		//
+		String json = null;
+		try {
+			json = readJsonFromUrl("http://localhost:4567/highscore/s=11&user=Emma");
+		}
+		catch (IOException | JSONException e) {
+			e.printStackTrace();
+		}
+		String str=json.toString();
+		assertEquals(str, "11, Emma");
+	}
 	
+	@Test
+	public void testServerCreateAccount() {
+		//
+		String json = null;
+		try {
+			json = readJsonFromUrl("http://localhost:4567/create-account/user=Emma&pw=blask");
+		}
+		catch (IOException | JSONException e) {
+			e.printStackTrace();
+		}
+		String str=json.toString();
+		assertEquals(str, "Emma, blask");
+	}
+	@Test
+	public void testServerLogin() {
+		//
+		String json = null;
+		try {
+			json = readJsonFromUrl("http://localhost:4567/login/user=Emma&pw=blask");
+		}
+		catch (IOException | JSONException e) {
+			e.printStackTrace();
+		}
+		String str=json.toString();
+		assertEquals(str, "Emma, blask");
+	}
+	
+	@Test
+	public void testServerGetCategories() {
+		//
+		String json = null;
+		try {
+			json = readJsonFromUrl("http://localhost:4567/categories");
+		}
+		catch (IOException | JSONException e) {
+			e.printStackTrace();
+		}
+		String str=json.toString();
+		assertEquals(str, "categories");
+	}
+	
+	@Test
+	public void testServerGetGamePackage() {
+		//
+		String json = null;
+		try {
+			json = readJsonFromUrl("http://localhost:4567/categories/gamepackage/11");
+		}
+		catch (IOException | JSONException e) {
+			e.printStackTrace();
+		}
+		String str=json.toString();
+		assertEquals(str, "gamePackage11");
+	}
 	
 	
 	//Metoder
@@ -107,13 +175,13 @@ public class ServerTestCase {
 	    return sb.toString();
 	  }
 
-	  public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+	  public static String readJsonFromUrl(String url) throws IOException, JSONException {
 	    InputStream is = new URL(url).openStream();
 	    try {
 	      BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 	      String jsonText = readAll(rd);
-	      JSONObject json = new JSONObject(jsonText);
-	      return json;
+	     // JSONObject json = new JSONObject(jsonText);
+	      return jsonText;
 	    } finally {
 	      is.close();
 	    }
