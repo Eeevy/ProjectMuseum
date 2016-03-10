@@ -15,78 +15,25 @@ import org.json.JSONObject;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class ServerTestCase {
-	private ClientHandler ch;
-//	private Server server=new Server();
 
+/**
+ * This class contains testcases that runs via JUnit. Used for testing of Server.java / our Rest-API.
+ * 
+ * OBS: Don't forget to start Server.java before running any tests!
+ * @author Gurkpatrullen / Andreas Andersson, David Isberg, Emma Shakespeare, Evelyn Gustavsson
+ *
+ */
+public class ServerTestCase {
 	
 	@Test
-	public void testGetCategories(){
-		ch = new ClientHandler();
-		assertEquals("categories" ,ch.getCategories());
-	}
-	
-	@Test
-	public void testGetGamePackageLowBVAGood1(){
-		ch = new ClientHandler();
-		assertEquals("gamePackage1", ch.getGamePackage("1"));
-	}
-	
-	@Test
-	public void testGetGamePackageLowBVAGood2(){
-		ch = new ClientHandler();
-		assertEquals("gamePackage10", ch.getGamePackage("10"));
-	}
-	
-	@Test
-	public void testGetGamePackageLowBVABad1(){
-		ch = new ClientHandler();
-		assertNotSame("gamePackage0", ch.getGamePackage("0"));
-	}
-	
-	@Test
-	public void testGetGamePackageLowBVABad2(){
-		ch = new ClientHandler();
-		assertNotSame("gamePackage11", ch.getGamePackage("11"));
-	}
-	
-	@Test
-	public void testLogin(){
-		ch = new ClientHandler();
-		assertEquals("Emma, bubbelgum", ch.login("username=Emma&pw=bubbelgum"));
-		
-	}
-	
-	@Test
-	public void testCreateAccount(){
-		ch = new ClientHandler();
-		assertEquals("rosamunda, hajen", ch.createAccount("username=rosamunda&pw=hajen"));
-	}
-	
-	@Test
-	public void testGetHighScore(){
-		ch = new ClientHandler();
-		assertEquals("highscore", ch.getHighScore());
-	}
-	
-	@Test 
-	public void testSetHighScore(){
-		ch = new ClientHandler();
-		assertEquals("105, emmapemma", ch.setHighScore("s=105&user=emmapemma"));
-		
-	}
-	
-	
-	
-	
-	//******Test methods in server.java **************************************
-	
-	@Test
+	/**
+	 * Get highscore
+	 */
 	public void testServerGetHighScore() {
 		//
 		String json = null;
 		try {
-			json = readJsonFromUrl("http://localhost:4567/highscore");
+			json = readFromUrl("http://localhost:4567/highscore");
 		}
 		catch (IOException | JSONException e) {
 			e.printStackTrace();
@@ -96,11 +43,14 @@ public class ServerTestCase {
 	}
 	
 	@Test
+	/**
+	 * Set highscore
+	 */
 	public void testServerSetHighScore() {
 		//
 		String json = null;
 		try {
-			json = readJsonFromUrl("http://localhost:4567/highscore/s=11&user=Emma");
+			json = readFromUrl("http://localhost:4567/highscore/s=11&user=Emma");
 		}
 		catch (IOException | JSONException e) {
 			e.printStackTrace();
@@ -110,24 +60,30 @@ public class ServerTestCase {
 	}
 	
 	@Test
+	/**
+	 * Create Account
+	 */
 	public void testServerCreateAccount() {
-		//
+		
 		String json = null;
 		try {
-			json = readJsonFromUrl("http://localhost:4567/create-account/user=Emma&pw=blask");
+			json = readFromUrl("http://localhost:4567/create-account/user=Emma&pw=blask&email=bambismurfen@gmail.com");
 		}
 		catch (IOException | JSONException e) {
 			e.printStackTrace();
 		}
 		String str=json.toString();
-		assertEquals(str, "Emma, blask");
+		assertEquals(str, "Emma, blask, bambismurfen@gmail.com");
 	}
 	@Test
+	/**
+	 * Login
+	 */
 	public void testServerLogin() {
-		//
+		
 		String json = null;
 		try {
-			json = readJsonFromUrl("http://localhost:4567/login/user=Emma&pw=blask");
+			json = readFromUrl("http://localhost:4567/login/user=Emma&pw=blask");
 		}
 		catch (IOException | JSONException e) {
 			e.printStackTrace();
@@ -137,25 +93,47 @@ public class ServerTestCase {
 	}
 	
 	@Test
+	/**
+	 * Login as Guest
+	 */
+	public void testServerLoginGuest() {
+	
+		String json = null;
+		try {
+			json = readFromUrl("http://localhost:4567/login/user=Guest&pw=Guest");
+		}
+		catch (IOException | JSONException e) {
+			e.printStackTrace();
+		}
+		String str=json.toString();
+		assertEquals(str, "Guest, Guest");
+	}
+	
+	@Test
+	/**
+	 * Get Categories
+	 */
 	public void testServerGetCategories() {
 		//
 		String json = null;
 		try {
-			json = readJsonFromUrl("http://localhost:4567/categories");
+			json = readFromUrl("http://localhost:4567/categories/swe");
 		}
 		catch (IOException | JSONException e) {
 			e.printStackTrace();
 		}
 		String str=json.toString();
-		assertEquals(str, "categories");
+		assertEquals(str, "categories swe");
 	}
 	
 	@Test
+	/**
+	 * Get Gamepackage
+	 */
 	public void testServerGetGamePackage() {
-		//
 		String json = null;
 		try {
-			json = readJsonFromUrl("http://localhost:4567/categories/gamepackage/11");
+			json = readFromUrl("http://localhost:4567/categories/gamepackage/11");
 		}
 		catch (IOException | JSONException e) {
 			e.printStackTrace();
@@ -165,7 +143,13 @@ public class ServerTestCase {
 	}
 	
 	
-	//Metoder
+	/**
+	 * This method is used to save the return from json to String. 
+	 * is used with readFromURL.
+	 * @param rd -reader with input
+	 * @return String
+	 * @throws IOException
+	 */
 	private static String readAll(Reader rd) throws IOException {
 	    StringBuilder sb = new StringBuilder();
 	    int cp;
@@ -175,12 +159,19 @@ public class ServerTestCase {
 	    return sb.toString();
 	  }
 
-	  public static String readJsonFromUrl(String url) throws IOException, JSONException {
+	/**
+	 * Establishes a connection to a specific URL and lets a Reader read the returning data. 
+	 * Uses readAll() to save the data as a String.
+	 * @param url -URL for request.
+	 * @return String
+	 * @throws IOException
+	 * @throws JSONException
+	 */
+	  public static String readFromUrl(String url) throws IOException, JSONException {
 	    InputStream is = new URL(url).openStream();
 	    try {
 	      BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 	      String jsonText = readAll(rd);
-	     // JSONObject json = new JSONObject(jsonText);
 	      return jsonText;
 	    } finally {
 	      is.close();

@@ -4,7 +4,9 @@ import static spark.Spark.get;
 import static spark.Spark.put;
 
 /**
- * REST-API, (URL Listener)
+ * REST-API/ Server with URL Routing, Calls Clienthandler for each request.
+ * @author Gurkpatrullen / Andreas Andersson, David Isberg, Emma Shakespeare, Evelyn Gustavsson
+ *
  */
 public class Server {
     private static ClientHandler clientHandler=new ClientHandler();
@@ -15,7 +17,6 @@ public class Server {
          * Get Highscore
          */
         get("/highscore", (request, res) -> {
-          //  System.out.println(request.params());
             res.type("text/json");
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Request-Method", "*");
@@ -27,8 +28,9 @@ public class Server {
 
         /**
          * Add highscore to Database, Param= score and username.
+         * :name = s=Score&user=Username
          */
-        get("/highscore/:name", (request, res) -> { //:name = s=score&user=username
+        get("/highscore/:name", (request, res) -> { 
             System.out.println(request.params());
             res.type("text/json");
             res.header("Access-Control-Allow-Origin", "*");
@@ -39,19 +41,21 @@ public class Server {
 
         /**
          * Get Category and gamepackages.
+         * :name= Language
          */
-        get("/categories", (request, res) -> {  //name= swe/eng
+        get("/categories/:name", (request, res) -> { 
             System.out.println(request.params());
             res.type("text/json");
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Request-Method", "*");
             res.header("Access-Control-Allow-Headers", "*");
-            return clientHandler.getCategories();
+            return clientHandler.getCategories(request.params(":name"));
         });
 
 
         /**
-         * Get gamepackage       //:name EX. id=1&lang=swe
+         * Get Gamepackage       
+         * :name=ID
          */
         get("/categories/gamepackage/:name", (request, res) -> {
             System.out.println(request.params());
@@ -64,7 +68,7 @@ public class Server {
 
         /**
          * Login, param with Username and Password.
-         * name: "user=username&pw=password"
+         * name: "user=Username&pw=Password"
          */
         get("/login/:name", (request, res) -> {
             System.out.println(request.params());
@@ -76,7 +80,8 @@ public class Server {
         });
 
         /**
-         * create account, param =username,password (+email and confirm password?)
+         * create account, param =username,password and email
+         * :name= user=Username&pw=Password&email=Email
          */
         get("/create-account/:name", (request, res) -> {
             System.out.println(request.params());
