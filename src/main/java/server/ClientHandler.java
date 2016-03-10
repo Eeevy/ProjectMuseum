@@ -28,10 +28,16 @@ public class ClientHandler {
      * @return String
      */
     public String getCategories(){
-        final String[] str = {new String()};
-        threadPool.execute(() -> {
-            str[0] =db.getCategories();
-        });
+        String[] str = {new String()};
+        threadPool.execute(() ->
+         str[0] =db.getCategories()
+         );
+        try {
+			Thread.sleep(0,1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return str[0];
     }
 
@@ -40,10 +46,15 @@ public class ClientHandler {
      * @return String
      */
     public String getGamePackage(String id){
-        final String[] str = {new String()};
-        threadPool.execute(() -> {
-            str[0] =db.getGamePackage(id);
-        });
+        String[] str = {new String()};
+        threadPool.execute(() ->
+                str[0] =db.getGamePackage(id));
+        try {
+			Thread.sleep(0,1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return str[0];
     }
 
@@ -64,12 +75,17 @@ public class ClientHandler {
 
         System.out.println("Login-User:"+username+" Password:"+password);
 
-        final String[] res = new String[1];
-        final String finalUsername = username;
-        final String finalPassword = password;
-        threadPool.execute(() -> {
-            res[0] =db.login(finalUsername, finalPassword);
-        });
+        String[] res = new String[1];
+        String finalUsername = username;
+        String finalPassword = password;
+        threadPool.execute(() ->
+                res[0] =db.login(finalUsername, finalPassword));
+        try {
+			Thread.sleep(0,1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return res[0];
     }
 
@@ -90,12 +106,17 @@ public class ClientHandler {
 
         System.out.println("Create account-User:"+username+" Password:"+password);
 
-        final String[] res = new String[1];
-        final String finalUsername = username;
-        final String finalPassword = password;
-        threadPool.execute(() -> {
-            res[0] =db.createAccount(finalUsername, finalPassword);
-        });
+        String[] res = new String[1];
+        String finalUsername = username;
+        String finalPassword = password;
+        threadPool.execute(() ->
+                res[0] =db.createAccount(finalUsername, finalPassword));
+        try {
+			Thread.sleep(0,1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return res[0];
     }
 
@@ -104,10 +125,15 @@ public class ClientHandler {
      * @return String
      */
     public String getHighScore(){
-        final String[] str = {new String()};
-        threadPool.execute(() -> {
-            str[0] =db.getHighScore();
-        });
+        String[] str = {new String()};
+        threadPool.execute(() ->
+                str[0] =db.getHighScore());
+        try {
+			Thread.sleep(0,1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return str[0];
     }
 
@@ -129,12 +155,18 @@ public class ClientHandler {
 
         System.out.println("SetHighscore-Score:"+score+" User:"+username);
 
-        final String[] res = {new String()};
-        final String finalUsername = username;
-        final String finalScore = score;
-        threadPool.execute(() -> {
-            res[0] =db.setHighScore(finalScore, finalUsername);
-        });
+        String[] res = {new String()};
+        String finalUsername = username;
+        String finalScore = score;
+        threadPool.execute(() ->
+                res[0] = db.setHighScore(finalScore, finalUsername));
+        try {
+			Thread.sleep(0,1);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
         return res[0];
     }
 
